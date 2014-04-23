@@ -1,12 +1,11 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def my_render():
-    url = url_for('twitter')
-    return render_template('twicake.html', redirect_url=url)
+    return render_template('twicake.html')
 
 
 @app.route('/', methods=['POST'])
