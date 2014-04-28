@@ -14,6 +14,9 @@ app.config.update(
     consumer_secret='DuBOE39WluGJeRdUtz3sXAN7pjPr4mtoaRJYe5IueIRaeOejID'
 )
 
+class myExeption(Exception):
+    pass
+
 class StreamListener(tweepy.streaming.StreamListener):
     tweet_id = None
     user_list = []
@@ -66,10 +69,10 @@ class Rottery:
 def my_render():
     if 'access_key' in session:
         return render_template('twicake.html', auth_url=url_for('auth'),
-                access_status='login successful!')
+                access_status=True)
     else:
         return render_template('twicake.html', auth_url=url_for('auth'),
-                access_status='login not yet')
+                access_status=False)
 
 
 @app.route('/auth')
@@ -89,9 +92,23 @@ def auth():
 
 @app.route('/', methods=['POST'])
 def my_send_post():
-    text = request.form['nickname']
-    process_text = text.upper()
-    return process_text
+    if 'tweepy_api' in app.config:
+        api = app.config['tweepy_api']
+    elif 'access_secret' in session:
+        auth = tweepy.OAuthHandler(app.config['consumer_key'],
+                app.config['consumer_secret'])
+        auth.set_access_token(session['access_key'],
+                session['access_secret'])
+        api = tweepy.API(auth)
+    else:
+        return redirect(url_for('auth'))
+    try:
+        api.update_status(request.form['send_text'])
+    except tweepy.TweepError as e:
+        return render_template('error_auth.html',
+                error_message=e.message), 401
+
+    return 'successful send : ' + request.form['send_text']
 
 
 @app.route('/verify')
@@ -108,6 +125,7 @@ def get_auth():
             session['access_secret'] = auth.access_token.secret
             session['request_key'] = app.config['request_key']
             session['request_secret'] = app.config['request_secret']
+            app.config['tweepy_api'] = tweepy.API(auth)
         except tweepy.TweepError as e:
             return render_template('error_auth.html',
                     error_message=e.message), 401
