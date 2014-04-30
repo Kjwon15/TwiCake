@@ -26,3 +26,8 @@ Notice
 ------
 
 - Twicake is still incomplete
+
+Build status
+------------
+
+![Build status](https://travis-ci.org/Kjwon15/TwiCake.svg)
