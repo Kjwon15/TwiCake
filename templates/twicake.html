@@ -14,7 +14,7 @@
             <li><input type="submit" value="Send"></li>
         </form>
     {% else %}
-    <li><a href="{{ auth_url }}">Login to Twitter</a></li>
+    <li><a href="{{ url_for('auth') }}">Login to Twitter</a></li>
     {% endif %}
     </body>
 </html>

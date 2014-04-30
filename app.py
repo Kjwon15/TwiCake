@@ -61,16 +61,10 @@ class Rottery:
 
 @app.route('/')
 def my_render():
-    if 'access_key' in session:
-        return render_template(
-            'twicake.html',
-            auth_url=url_for('auth'),
-            access_status=True)
-    else:
-        return render_template(
-            'twicake.html',
-            auth_url=url_for('auth'),
-            access_status=False)
+    return render_template(
+        'twicake.html',
+        access_status=('access_key' in session)
+        )
 
 
 @app.route('/auth')
