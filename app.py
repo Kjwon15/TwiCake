@@ -6,13 +6,7 @@ from tweepy.auth import OAuthHandler
 from tweepy.api import API
 
 app = Flask(__name__)
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
-#config of App
-app.config.update(
-    consumer_key='o7vgHO8hRGPl62L9xokp76Fan',
-    consumer_secret='DuBOE39WluGJeRdUtz3sXAN7pjPr4mtoaRJYe5IueIRaeOejID'
-)
 
 class myExeption(Exception):
     pass
